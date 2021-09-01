@@ -4,7 +4,7 @@
 # Invoke by: devregcsv
 # Creates a CSV file containijng specified device details for a group of devices.
 # Originally converted from JPetruno's Excel script of the same name.
-# Original Creation: 247AUG21
+# Original Creation: 28AUG21
 # Released under GNU 3.0 License
 
 import sys  # Used to determine number of args passed for program mode
