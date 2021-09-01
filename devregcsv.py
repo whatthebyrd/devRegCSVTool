@@ -10,10 +10,9 @@
 import sys  # Used to determine number of args passed for program mode
 import datetime  # Used to provide date & time for filename
 
-# Define vars. Could be defined inline for the "Guided" mode, however this allows for a "headless" mode in the future.
+# Define vars. Most defined inline for the "Guided" mode, however this allows for a "headless" mode in the future.
 relV = "30.00"  # Release version number
 caseNum = "00000"  # Case number
-# devTotal = 0  # Total number of devices. Used as diagnostic tool.
 devNum = 0  # The number internally assigned to each device. Can be used as a counter.
 devNumSeed = 1  # The number at which to start numbering devices.
 devEUIseed = "FFFFFF0100000000"  # The initial value of the EUI. Initially modified by devNumSeed and then by device.
@@ -21,19 +20,12 @@ latSeed = 39.8283  # Initial latitude. 39.8283N, 98.5795W = geographic center of
 longSeed = 98.5795  # Initial longitude. 39.8283N, 98.5795W = geographic center of CONUS.
 latIncr = 0.0001  # Value by which to increment each device's latitude.
 longIncr = 0.0001  # Value by which to increment each device's longitude.
-# Below will probably be used for "headless" mode.
-# devTypeTuple = ("UNRECOGNIZED","5847","5894","5910","5916","5922","5848","5850","5895","5911","5899","WATER_SENSOR",
-#           "MULTITECH-MDOT","MULTITECH-MDOT-EVB","MULTITECH-XDOT","MICROCHIP-RN2903","SODAQ_LORAONE",
-#           "NUCLEO_SX1276MB1LAS","LAIRD_DVK-RM191-SM-01","GLOBALSAT_LT501","XIGNAL_MOUSETRAP","TABS_OBJECT_LOCATOR",
-#           "TABS_DOOR_WINDOW","PYCOM-LOPY","SAGEMCOM_SICONIA","ASCOEL_MOTION","ASCOEL_DOOR_SWITCH","GLOBALSAT_LT100",
-#           "ELSYS_ELT1","ELSYS_ERS","ELSYS_ESM5K","TEKTELIC_KONA_HOME","ATMEL_SAML21","LIBELIUM")
 devType = "DEVICE"  # Name of default device type.
-# devClassTuple = ("CLASS_A","CLASS_B","CLASS_C") # To be used for "headless" mode.
 devClass = "CLASS_A"  # Device class default.
 fwVer = "1.02.03.04"  # Default fw version for device.
 
 if len(sys.argv) == 1:  # Guided process
-    print("\n\nWelcome to the Device Register CSV creation tool.\n")
+    print("\n\nDevRegCSV tool\n")
     relV = input("To begin, please specify the relv:\n")
     print("Relv is set to " + relV + "\n")
     caseNum = input("\nPlease enter the case # associated with these devices:\n")
@@ -90,13 +82,13 @@ if len(sys.argv) == 1:  # Guided process
         print("Metadata is \"" + metadata + "\".\n")
     chgDevType = input("\nThe default device type is \"" + devType + "\". Would you like to set a device type? y/n\n")
     if chgDevType == "y":
-        devType = input("Please input the new device type:\n")  # Add dict/tuple for device types
+        devType = input("Please input the new device type:\n")  # Add dict/tuple for device types?
         print("New device type is \"" + devType + "\".\n")
     else:
         print("Device type is \"" + str(devType) + "\".\n")
     chgDevClass = input("\nThe default device class is \"CLASS_A\". Would you like to set a device class? y/n\n")
     if chgDevClass == "y":
-        devClass = input("Please input the new device class:\n")  # Add dict/tuple for device classes
+        devClass = input("Please input the new device class:\n")  # Add dict/tuple for device classes?
         print("New device class is \"" + devClass + "\".\n")
     else:
         print("Device class is \"" + devClass + "\".\n")
@@ -116,10 +108,9 @@ today = datetime.datetime.now()
 filename = today.strftime("%d%b%y-%H%M")
 count = 0
 csvfile = open(f"{filename}.csv", "x")
-# FIX CSV FILE FORMATTING, please.
 csvfile.write("dev# :: devEUI :: appKey :: lat :: long :: tags :: metadata :: devType :: devClass :: fwVer\n")
 devNumID = devNumSeed
-devEUI = int(devEUIseed, 16)
+devEUI = int(devEUIseed, 16) + devNumSeed
 appKey = str(devEUI) * 2
 lat = latSeed
 long = longSeed
@@ -134,6 +125,4 @@ while count != devNum:
     long += longIncr
     count += 1
 
-print(f"CSV is output in CWD at {filename}.csv with {devNum} devices listed.")
-
-exit()
+sys.exit(f"CSV is output in CWD at {filename}.csv with {devNum} devices listed.\nExiting.")
